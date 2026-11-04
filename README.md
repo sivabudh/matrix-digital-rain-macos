@@ -1,6 +1,6 @@
 # Matrix Rain
 
-![Matrix Rain running on macOS: green digital rain in a borderless window](assets/digital-rain.jpg)
+![Animated Matrix Rain on macOS: green digital rain falling in a borderless window](assets/digital-rain.gif)
 
 **A little piece of the Matrix for your Mac desktop.**
 
