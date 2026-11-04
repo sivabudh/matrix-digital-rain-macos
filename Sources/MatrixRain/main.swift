@@ -1,0 +1,3 @@
+import MatrixRainUI
+
+MatrixRainApplication.run()

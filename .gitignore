@@ -1,0 +1,18 @@
+.build/
+.swiftpm/
+build/
+work/
+.DS_Store
+
+# Local credentials, signing assets and distributable artifacts
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+*.app/
+*.zip
+outputs/
