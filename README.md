@@ -1,5 +1,9 @@
 # Matrix Rain
 
+![Matrix Rain running on macOS: green digital rain in a borderless window](assets/digital-rain.png)
+
+**A little piece of the Matrix for your Mac desktop.**
+
 A native macOS menu bar app with smaller, scalable green digital rain in a borderless window. It preserves your wallpaper and remembers its size and position.
 
 ## Use
