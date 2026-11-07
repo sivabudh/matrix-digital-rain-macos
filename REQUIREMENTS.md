@@ -33,3 +33,7 @@ Frozen at the owner's request on 4 November 2026. This is the product contract f
 Retain `local.pac.matrix-rain`, `overlayContentRect`, the app name, and installation at `~/Applications/Matrix Rain.app`. Diagnostic snapshots remain local and are not a product control. Build and verification commands may exist for developers; the installed app has no test controls or keyboard shortcuts.
 
 Existing compatibility details are implementation constraints, not new features. Tests of domain transitions or a button action do not establish that a person can click that button on the actual desktop. Record automated checks and actual Mac interaction evidence separately.
+
+## Owner amendment — 7 November 2026
+
+The menu bar includes a Speed submenu: 25%, 50%, 64%, 80%, 100%, 125%, and 200% of the original falling speed. Changes apply immediately and persist across launches; the default is 64%. Frame rate and glyph mutation timing remain unchanged. This adds a speed preference to R08/R12.

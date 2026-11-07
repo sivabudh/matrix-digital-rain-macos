@@ -10,6 +10,7 @@ A native macOS menu bar app with smaller, scalable green digital rain in a borde
 
 - **Locked:** the rain sits behind desktop icons and passes clicks through. Hover over it to reveal **Unlock** at the bottom right, then click the button.
 - **Unlocked:** drag the rain to move it, or resize its edges and corners. Right-click to reveal **Lock** at the same bottom-right position, then click it.
+- **Speed** in the menu bar selects 25%, 50%, 64%, 80%, 100%, 125%, or 200% of the original falling speed. Changes apply immediately and are remembered; the default is 64%.
 - The menu bar offers the same **Lock / Unlock** actions, plus **Hide Overlay / Show Overlay** and **Quit Matrix Rain**. Opening the running app again also unlocks it.
 
 There are no title bar, window buttons, keyboard shortcuts, pause control, full-screen, maximize or fill-display commands. The rain always animates while visible and awake; work suspends while hidden or asleep. Reopening the app restores its saved rectangle and starts locked. If a display is disconnected, the window recovers onto an available display.

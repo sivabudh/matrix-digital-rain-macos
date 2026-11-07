@@ -13,6 +13,7 @@ private struct NativeChecks {
         ProcessInfo.processInfo.disableAutomaticTermination("Native adapter verification")
         try bottomRightControlsDriveTheRealAdapters()
         try menuLabelsAndForbiddenFeatures()
+        try speedMenuAppliesAndPersists()
         try placementCompatibilityAndMalformedPreferences()
         try windowChangesPersistWithoutDecorationDrift()
     }
@@ -91,6 +92,24 @@ private struct NativeChecks {
         }
     }
 
+    private func speedMenuAppliesAndPersists() throws {
+        try withController { controller, defaults in
+            controller.start()
+            expect(controller.state.speed == .relaxed)
+            let submenu = controller.menu.items.first { $0.title == "Speed" }!.submenu!
+            for speed in RainSpeed.allCases {
+                let index = submenu.items.firstIndex { $0.tag == speed.rawValue }!
+                submenu.performActionForItem(at: index)
+                expect(controller.state.speed == speed)
+                expect(controller.surface.rain.speed == speed)
+                expect(submenu.items.filter { $0.state == .on }.map(\.tag) == [speed.rawValue])
+                expect(PlacementStore(defaults: defaults).loadSpeed() == speed)
+            }
+            defaults.set(999, forKey: "rainSpeedPercent")
+            expect(PlacementStore(defaults: defaults).loadSpeed() == .relaxed)
+        }
+    }
+
     private func placementCompatibilityAndMalformedPreferences() throws {
         _ = NSApplication.shared
         let suite = "local.pac.matrix-rain.tests.\(UUID().uuidString)"
@@ -136,7 +155,7 @@ private func expect(_ condition: @autoclosure () -> Bool, file: StaticString = #
 
 do {
     try NativeChecks().run()
-    print("PASS: native adapter checks completed (4 scenarios).")
+    print("PASS: native adapter checks completed (5 scenarios).")
     exit(0)
 } catch {
     fputs("FAIL: native adapter checks: \(error)\n", stderr)

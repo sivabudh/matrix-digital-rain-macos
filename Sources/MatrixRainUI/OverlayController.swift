@@ -19,6 +19,7 @@ final class OverlayController: NSObject, NSWindowDelegate {
         surface = OverlaySurface(frame: store.load(screens: NSScreen.screens.map(\.visibleFrame)), seed: seed)
         menu = MenuBar()
         super.init()
+        state = state.applying(.speedChanged(store.loadSpeed()))
         surface.window.delegate = self
         surface.onEvent = { [weak self] in self?.send($0) }
         menu.onEvent = { [weak self] in self?.send($0) }
@@ -49,12 +50,14 @@ final class OverlayController: NSObject, NSWindowDelegate {
         guard next != previous else { return }
         state = next
         render(previous: previous)
+        if case .speedChanged(let speed) = event { store.saveSpeed(speed) }
         if event == .lock || event == .toggleVisibility { savePlacement() }
     }
 
     private func render(previous: OverlayState?) {
         rendering = true
         defer { rendering = false }
+        surface.rain.speed = state.speed
         surface.apply(state, previous: previous)
         menu.apply(state)
         writeStatus()

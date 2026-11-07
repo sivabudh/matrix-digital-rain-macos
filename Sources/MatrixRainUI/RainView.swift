@@ -4,6 +4,7 @@ import RainCore
 /// Draws a domain scene; owns the clock and cached native image resources.
 @MainActor
 final class RainView: NSView {
+    var speed: RainSpeed = .relaxed
     var onRightClick: (() -> Void)?
     private var scene: RainScene
     private let sprites: [[CGImage]]
@@ -46,7 +47,7 @@ final class RainView: NSView {
 
     private func advanceFrame() {
         let now = ProcessInfo.processInfo.systemUptime
-        scene = scene.advanced(by: now - lastFrameTime, viewport: bounds.size)
+        scene = scene.advanced(by: now - lastFrameTime, viewport: bounds.size, speed: speed)
         lastFrameTime = now
         needsDisplay = true
     }

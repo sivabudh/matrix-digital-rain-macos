@@ -65,7 +65,7 @@ Unlocked rain receives its own right-click events and shows a normal button insi
 
 ## Persistence, effects and recovery
 
-The only product preference is the content rectangle under existing key `overlayContentRect` and domain `local.pac.matrix-rain`. Startup validates and recovers it against current display geometry. Moving/resizing saves it; mode changes preserve it. There is no persisted interaction log, transient button flag, pause setting or unlocked session to replay. Diagnostic JSON is an observation, not the source of truth.
+Product preferences are the selected `RainSpeed` under `rainSpeedPercent` and the content rectangle under existing key `overlayContentRect` and domain `local.pac.matrix-rain`. Startup validates and recovers it against current display geometry. Moving/resizing saves it; mode changes preserve it. There is no persisted interaction log, transient button flag, pause setting or unlocked session to replay. Diagnostic JSON is an observation, not the source of truth.
 
 All effects are local: native window/menu changes, timer lifetime, preferences and diagnostic file writes. A failed diagnostic write is logged and does not invent a state transition or stop animation. Explicit shutdown invalidates timers, removes notification observers, saves placement and removes native surfaces. Weak timer/event callbacks avoid retaining controllers through their own callbacks.
 
@@ -76,3 +76,5 @@ No event sourcing, CQRS infrastructure, generic repository layer, service contai
 Engineering conventions are applied proportionately: validated types, deterministic core, explicit transitions, shared state-derived views and simple mechanisms. This decorative app does not implement institutional decision workflows. No production certification or independent review is claimed.
 
 `zsh test.sh` runs Swift Testing for the core and then `Tests/NativeChecks/main.swift` as a separate synchronous native-adapter executable. On this Mac, the generic Swift Testing/AppKit host ended before reporting a complete result; those runs are not counted as passes. The native checker fails explicitly on an unmet expectation and is never bundled into the application. It can verify button targets and window properties; it does not prove hover usability, desktop click delivery, animation smoothness, battery impact, all Space configurations or long-term stability. Those require actual observation on the running Mac. See [verification record](VERIFICATION.md) for the evidence obtained in this refactor.
+
+Speed is a typed core event/state value. The controller loads and saves it, projects it to the checked menu item and rain view, and passes it into deterministic simulation advancement. It scales stream movement without restarting streams or timers.

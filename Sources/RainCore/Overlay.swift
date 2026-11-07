@@ -16,10 +16,12 @@ public enum OverlayEvent: Equatable, Sendable {
     case unlock, lock, toggleVisibility, rightClick
     case pointerChanged(PointerRegion)
     case displayChanged(DisplayActivity)
+    case speedChanged(RainSpeed)
 }
 
 /// Product state has no window, timer, preferences or rendering dependency.
 public struct OverlayState: Equatable, Sendable {
+    public private(set) var speed: RainSpeed = .relaxed
     public private(set) var mode: OverlayMode = .locked
     public private(set) var visibility: OverlayVisibility = .visible
     public private(set) var display: DisplayActivity = .awake
@@ -36,6 +38,8 @@ public struct OverlayState: Equatable, Sendable {
     public func applying(_ event: OverlayEvent) -> Self {
         var next = self
         switch event {
+        case .speedChanged(let speed):
+            next.speed = speed
         case .unlock:
             if mode.isLocked { next.mode = .unlocked(.hidden) }
             next.visibility = .visible

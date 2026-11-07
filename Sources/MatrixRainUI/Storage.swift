@@ -11,6 +11,10 @@ struct PlacementStore {
         return OverlayLayout.restore(saved, screens: screens)
     }
     func save(_ frame: OverlayFrame) { defaults.set(NSStringFromRect(frame.rect), forKey: key) }
+    func loadSpeed() -> RainSpeed {
+        RainSpeed(rawValue: defaults.integer(forKey: "rainSpeedPercent")) ?? .relaxed
+    }
+    func saveSpeed(_ speed: RainSpeed) { defaults.set(speed.rawValue, forKey: "rainSpeedPercent") }
     func flush() { defaults.synchronize() }
 }
 
@@ -27,6 +31,7 @@ struct StatusWriter {
     func write(state: OverlayState, surface: OverlaySurface) {
         let rect = surface.contentFrame.rect
         let snapshot: [String: Any] = [
+            "speedPercent": surface.rain.speed.rawValue,
             "pid": ProcessInfo.processInfo.processIdentifier,
             "editing": !state.mode.isLocked, "clickThrough": surface.window.ignoresMouseEvents,
             "visible": state.isVisible, "animationActive": state.animationActive,

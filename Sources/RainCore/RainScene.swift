@@ -1,6 +1,12 @@
 import Foundation
 import CoreGraphics
 
+public enum RainSpeed: Int, CaseIterable, Sendable {
+    case quarter = 25, half = 50, relaxed = 64, gentle = 80, normal = 100, fast = 125, double = 200
+    public var multiplier: Double { Double(rawValue) / 100 }
+    public var label: String { "\(rawValue)%" }
+}
+
 public enum RainStyle {
     public static let referenceSize = CGSize(width: 960, height: 630)
     public static let cell = CGSize(width: 17, height: 23)
@@ -54,10 +60,10 @@ public struct RainScene: Equatable, Sendable {
     public init(seed: UInt64) { random = RainRandom(seed: seed) }
 
     /// Deterministic and free of clocks or drawing calls. The old scene is unchanged.
-    public func advanced(by elapsed: Double, viewport: CGSize) -> Self {
+    public func advanced(by elapsed: Double, viewport: CGSize, speed: RainSpeed = .relaxed) -> Self {
         guard elapsed.isFinite, elapsed >= 0 else { return self }
         var next = self
-        next.advance(by: min(elapsed, 0.1), layout: RainLayout(viewport: viewport))
+        next.advance(by: min(elapsed, 0.1), layout: RainLayout(viewport: viewport), speed: speed)
         return next
     }
 
@@ -69,14 +75,14 @@ public struct RainScene: Equatable, Sendable {
         return Stream(head: head, speed: speed, length: length, glyphs: glyphs)
     }
 
-    private mutating func advance(by delta: Double, layout: RainLayout) {
+    private mutating func advance(by delta: Double, layout: RainLayout, speed: RainSpeed) {
         let count = max(1, Int(ceil(layout.sceneSize.width / RainStyle.cell.width)))
         let rows = Double(layout.sceneSize.height / RainStyle.cell.height)
         while streams.count < count { streams.append(makeStream(rows: rows)) }
         if streams.count > count { streams.removeLast(streams.count - count) }
         mutationTime += delta
         for index in streams.indices {
-            streams[index].head += delta * streams[index].speed
+            streams[index].head += delta * streams[index].speed * speed.multiplier
             if streams[index].head - Double(streams[index].length) > rows {
                 streams[index] = makeStream(rows: rows)
                 streams[index].head = -18 + random.unit() * 17

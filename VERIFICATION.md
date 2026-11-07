@@ -39,3 +39,7 @@ The physical hover-to-Unlock interaction was not separately automated in this re
 Local development evidence is under `work/`: final `tests.log`, `build.log`, `pre-install-status.json` and `post-install-status.json`. Earlier failed/incomplete test logs are superseded by the completed run described above. The pre-refactor source and app bundle are under `work/pre-refactor/` for rollback. Neither logs nor tests are part of the installed app.
 
 The source archive accompanying this refactor contains the frozen requirements, architecture, source, developer tests, scripts and SHA-256 manifest. Generated build caches and historical scratch files are excluded.
+
+## Speed selection — 7 November 2026
+
+`zsh test.sh` passed all 7 core tests and native adapter checks, including invoking every Speed submenu action, checking the selected item and live render speed, preference round trips, and invalid-preference fallback. These automated menu actions do not establish manual desktop interaction.
